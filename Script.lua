@@ -333,6 +333,79 @@ box:AddToggle("ViewPCLD", {
         end
     end
 })
+local Players = game:GetService("Players")
+
+local function AddESP(plr)
+    if plr == Players.LocalPlayer then return end
+
+    local function Apply(char)
+        if char:FindFirstChild("VTX_ESP") then return end
+
+        -- Highlight
+        local hl = Instance.new("Highlight")
+        hl.Name = "VTX_ESP"
+        hl.FillTransparency = 1
+        hl.OutlineTransparency = 0
+        hl.OutlineColor = Color3.fromRGB(255,255,255)
+        hl.DepthMode = Enum.HighlightDepthMode.AlwaysOnTop
+        hl.Parent = char
+
+        -- Nome
+        local head = char:FindFirstChild("Head")
+        if head then
+            local bill = Instance.new("BillboardGui")
+            bill.Name = "VTX_NameESP"
+            bill.Size = UDim2.new(0, 200, 0, 40)
+            bill.StudsOffset = Vector3.new(0, 2.5, 0)
+            bill.AlwaysOnTop = true
+            bill.Parent = head
+
+            local txt = Instance.new("TextLabel")
+            txt.Size = UDim2.new(0.5, 0, 0.5, 0)
+            txt.BackgroundTransparency = 1
+            txt.Text = plr.Name
+            txt.TextColor3 = Color3.fromRGB(255,0,255)
+            txt.TextStrokeTransparency = 0
+            txt.TextScaled = true
+            txt.Font = Enum.Font.SourceSansBold
+            txt.Parent = bill
+        end
+    end
+
+    if plr.Character then
+        Apply(plr.Character)
+    end
+
+    plr.CharacterAdded:Connect(Apply)
+end
+
+local function RemoveESP()
+    for _, plr in ipairs(Players:GetPlayers()) do
+        if plr.Character then
+            local esp = plr.Character:FindFirstChild("VTX_ESP")
+            if esp then esp:Destroy() end
+
+            local head = plr.Character:FindFirstChild("Head")
+            if head then
+                local nameesp = head:FindFirstChild("VTX_NameESP")
+                if nameesp then nameesp:Destroy() end
+            end
+        end
+    end
+end
+box:AddToggle("PlayerESP", {
+    Text = "Player ESP",
+    Default = false,
+    Callback = function(v)
+        if v then
+            for _, plr in ipairs(game.Players:GetPlayers()) do
+                AddESP(plr)
+            end
+        else
+            RemoveESP()
+        end
+    end
+})
 
 end
 
