@@ -2459,7 +2459,7 @@ do
     local box = Tabs.Keybinds:AddRightGroupbox("VFly")
 
     local vflyEnabled = false
-    local flySpeed = 100
+    local flySpeed = 400
     local bv, bg
 
     local function startVFly()
@@ -2467,6 +2467,11 @@ do
         local char = plr.Character
         if not char or not char:FindFirstChild("HumanoidRootPart") then return end
         local hrp = char.HumanoidRootPart
+        local humanoid = char:FindFirstChild("Humanoid")
+
+        -- Remove fly antigo se existir
+        if hrp:FindFirstChild("VFly_BV") then hrp.VFly_BV:Destroy() end
+        if hrp:FindFirstChild("VFly_BG") then hrp.VFly_BG:Destroy() end
 
         bv = Instance.new("BodyVelocity")
         bv.Name = "VFly_BV"
@@ -2500,6 +2505,7 @@ do
 
                 bv.Velocity = moveDir * flySpeed
                 bg.CFrame = cam.CFrame
+
                 RunService.RenderStepped:Wait()
             end
         end)
@@ -2507,8 +2513,27 @@ do
 
     local function stopVFly()
         vflyEnabled = false
-        if bv then bv:Destroy() end
-        if bg then bg:Destroy() end
+
+        local char = plr.Character
+        if char and char:FindFirstChild("HumanoidRootPart") then
+            local hrp = char.HumanoidRootPart
+            
+            -- Zera a velocidade antes de destruir
+            if bv and bv.Parent then
+                bv.Velocity = Vector3.zero
+                task.wait() -- pequeno delay para aplicar a velocidade zero
+            end
+            
+            if humanoid then
+                humanoid.PlatformStand = false
+            end
+
+            -- Destroi os bodies
+            if bv then bv:Destroy() end
+            if bg then bg:Destroy() end
+        end
+
+        bv, bg = nil, nil
     end
 
     box:AddToggle("VFlyToggle", {
@@ -2542,7 +2567,7 @@ do
         end
     end)
 
-    -- Keybind para ligar/desligar rápido
+    -- Keybind
     box:AddLabel("VFly Keybind"):AddKeyPicker("VFlyKey", {
         Default = "V",
         Text = "Toggle VFly",
