@@ -457,15 +457,15 @@ box:AddToggle("AntiInput", {
         if antiinputlag then
             local burger = inv:FindFirstChild("FoodCoconut") or spawntoy("FoodCoconut", HRP.CFrame)
             burger.Name = "burger"
-            task.wait(0.2)
+            task.wait(0)
             spawn(function()
                 while antiinputlag and task.wait() do
                     task.spawn(function()
                         grab(burger)
                     end)
-                    task.wait(0.1)
+                    task.wait(0)
                     task.spawn(function()
-                        drop(burger, CFrame.new(0, 1e9, 0))
+                        drop(burger, CFrame.new(0, 1, 0))
                     end)
                     if (burger.HoldPart.RigidConstraint.Attachment1 and burger.HoldPart.RigidConstraint.Attachment1 ~= plr.Character["Left Arm"].LeftGripAttachment) or (not burger or not burger.Parent) then
                         if inv:FindFirstChild("burger") then
@@ -520,7 +520,7 @@ box:AddToggle("GucciTractor", {
                     end
                 end)
                 spawn(function()
-                    task.wait(1)
+                    task.wait(0)
                     local mess = pal.ViewItemButton.NewMessage:Clone()
                     mess.Name = "Gucci2"
                     mess.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -544,7 +544,7 @@ box:AddToggle("GucciTractor", {
             while blobb.VehicleSeat.Occupant ~= plr.Character.Humanoid do task.wait() end
             plr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
             sno(blobb.Part)
-            task.wait(0.2)
+            task.wait(0.1)
             blobb.VehicleSeat.CFrame = CFrame.new(0, 0/0, 0)
         else
             DestroyToy:FireServer(inv.tractorgucci)
@@ -571,9 +571,9 @@ box:AddToggle("GucciTrain", {
                     task.wait()
                 end
             end)
-            task.wait(0.2)
+            task.wait(0.1)
             plr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            task.wait(0.2)
+            task.wait(0.1)
             HRP.CFrame = pos
         else
             for i = 1, 30 do
@@ -602,7 +602,7 @@ box:AddToggle("GucciBlobman", {
                     end
                 end)
                 spawn(function()
-                    task.wait(1)
+                    task.wait(0)
                     local mess = pal.ViewItemButton.NewMessage:Clone()
                     mess.Name = "Gucci1"
                     mess.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -648,7 +648,7 @@ box:AddToggle("AutoGucciBlob", {
                 local blobb
                 repeat task.wait() until plr.IsHeld.Value == false
                 hum.Sit = true
-                task.wait(0.1)
+                task.wait(0)
                 hum.Sit = false
                 pcall(function()
                     local pal, pal2
@@ -661,7 +661,7 @@ box:AddToggle("AutoGucciBlob", {
                         end
                     end)
                     spawn(function()
-                        task.wait(1)
+                        task.wait(0)
                         local mess = pal.ViewItemButton.NewMessage:Clone()
                         mess.Name = "Gucci1"
                         mess.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -690,7 +690,7 @@ box:AddToggle("AutoGucciBlob", {
                 plr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
                 task.wait()
                 repeat task.wait() sno(blobb.RightDetector) until blobb.Head:FindFirstChild("PartOwner")
-                task.wait(0.1)
+                task.wait(0)
                 blobb.VehicleSeat.CFrame = CFrame.new(0, 0/0, 0)
             end
             task.spawn(function()
@@ -1925,7 +1925,7 @@ box:AddToggle("ApplyMethodBlob", {
                                 local pos = HRP.CFrame
                                 if tt.Character and tt.Character:FindFirstChild("HumanoidRootPart") and tt.Character.Humanoid.Health ~= 0 then
                                     Blob.HumanoidRootPart.CFrame = tt.Character.HumanoidRootPart.CFrame
-                                    task.wait(0.1)
+                                    task.wait(0)
                                     repeat task.wait()
                                         CG:FireServer(nil, tt.Character.HumanoidRootPart, Blob.RightDetector.RightWeld)
                                         CD:FireServer(Blob.RightDetector.RightWeld)
@@ -2005,17 +2005,17 @@ box:AddToggle("ApplyMethodGrab", {
                                     repeat task.wait() blob.VehicleSeat:Sit(hum) until hum.SeatPart == blob.VehicleSeat 
                                     local CG,CD = blob.BlobmanSeatAndOwnerScript.CreatureGrab, blob.BlobmanSeatAndOwnerScript.CreatureRelease
                                     blob.HumanoidRootPart.CFrame = Sets.HRP.CFrame
-                                    task.wait(0.2)
+                                    task.wait(0)
                                     repeat
                                         task.wait()
                                         CG:FireServer(blob.RightDetector, Sets.HRP, blob.RightDetector.RightWeld)
                                         CD:FireServer(blob.RightDetector.RightWeld)
                                     until isnetworkowner(Sets.HRP)
-                                    task.wait(0.2)
+                                    task.wait(0)
                                     Sets.HRP.CFrame = pos * offset
                                     HRP.CFrame = pos
                                     DestroyToy:FireServer(inv:FindFirstChild("cringe"))
-                                    task.wait(0.5)
+                                    task.wait(0)
                                 end
                             end
                             if Sets.HRP and hum and HRP then
@@ -2034,11 +2034,11 @@ box:AddToggle("ApplyMethodGrab", {
                                 if (Sets.HRP.Position - HRP.Position).Magnitude >= 29 and Sets.Char.Parent == workspace then
                                     task.wait(0.1)
                                     tp(HRP, Sets.HRP)
-                                    task.wait(0.2)
+                                    task.wait(0.1)
                                     sno(Sets.HRP)
                                     task.wait()
                                     HRP.CFrame = pos
-                                    task.wait(0.2)
+                                    task.wait(0.1)
                                     for i,v in pairs(Sets.Char:GetChildren()) do
                                         if v:IsA("Part") and v.Name ~= "Humanoid" then
                                             v.CFrame = pos * offset
@@ -2062,7 +2062,7 @@ box:AddToggle("ApplyMethodGrab", {
                                     kickbp = Instance.new("BodyPosition")
                                     kickbp.Parent = Sets.HRP
                                     kickbp.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-                                    kickbp.D = 200
+                                    kickbp.D = 300
                                     kickbp.Position = HRP.Position + Vector3.new(0,5,0)
                                 end
                                 if not kickbg or kickbg.Parent ~= Sets.HRP then
@@ -2115,13 +2115,13 @@ box:AddToggle("ApplyMethodGrab", {
                                     repeat task.wait() blob.VehicleSeat:Sit(hum) until hum.SeatPart == blob.VehicleSeat 
                                     local CG,CD = blob.BlobmanSeatAndOwnerScript.CreatureGrab, blob.BlobmanSeatAndOwnerScript.CreatureRelease
                                     blob.HumanoidRootPart.CFrame = Sets.HRP.CFrame
-                                    task.wait(0.2)
+                                    task.wait(0.1)
                                     repeat
                                         task.wait()
                                         CG:FireServer(blob.RightDetector, Sets.HRP, blob.RightDetector.RightWeld)
                                         CD:FireServer(blob.RightDetector.RightWeld)
                                     until isnetworkowner(Sets.HRP)
-                                    task.wait(0.2)
+                                    task.wait(0.1)
                                     Sets.HRP.CFrame = pos * offset
                                     HRP.CFrame = pos
                                     DestroyToy:FireServer(inv:FindFirstChild("cringe"))
@@ -2339,7 +2339,7 @@ box:AddSlider("Packets", {
     Text = "Packet Strength",
     Default = 3000,
     Min = 100,
-    Max = 600000,
+    Max = 900000,
     Rounding = 0,
     Callback = function(v)
         Packets = v
