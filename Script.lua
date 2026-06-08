@@ -2668,21 +2668,48 @@ toggle:OnChanged(function(v)
 end)
 
 end
--- ==================== BLACKLIST (Apenas Notificação) ====================
-local Blacklist = {}  -- Lista permanente
+-- ==================== BLACKLIST (Persistente com Arquivo) ====================
+local BlacklistFile = "Blacklist_Config.json"
+
+local function SaveBlacklist()
+    local data = {
+        Blacklist = Blacklist or {},
+        Enabled = BlacklistEnabled or false
+    }
+    writefile(BlacklistFile, game:GetService("HttpService"):JSONEncode(data))
+end
+
+local function LoadBlacklist()
+    if isfile(BlacklistFile) then
+        local success, data = pcall(function()
+            return game:GetService("HttpService"):JSONDecode(readfile(BlacklistFile))
+        end)
+        if success then
+            Blacklist = data.Blacklist or {}
+            BlacklistEnabled = data.Enabled or false
+            return true
+        end
+    end
+    Blacklist = {}
+    BlacklistEnabled = false
+    return false
+end
+
+-- Carrega ao iniciar o script
+LoadBlacklist()
 
 do
     local box = Tabs.Blacklist:AddLeftGroupbox("Blacklist")
 
     box:AddToggle("EnableBlacklist", {
         Text = "Enable Blacklist",
-        Default = false,
+        Default = BlacklistEnabled,
         Callback = function(v)
             BlacklistEnabled = v
+            SaveBlacklist()
         end
     })
 
-    -- Lista de jogadores no servidor
     local ServerPlayersDropdown = box:AddDropdown("ServerPlayers", {
         Text = "Jogadores no Servidor",
         Values = {},
@@ -2690,7 +2717,6 @@ do
         Multi = false,
     })
 
-    -- Lista da Blacklist
     local BlacklistDropdown = box:AddDropdown("BlacklistList", {
         Text = "Jogadores na Blacklist",
         Values = {},
@@ -2706,6 +2732,7 @@ do
         if not table.find(Blacklist, name) then
             table.insert(Blacklist, name)
             Library:Notify("✅ " .. name .. " adicionado na Blacklist", 4)
+            SaveBlacklist()
             UpdateBlacklistUI()
         else
             Library:Notify(name .. " já está na blacklist", 3)
@@ -2721,17 +2748,19 @@ do
                 table.remove(Blacklist, idx)
             end
         end
+        SaveBlacklist()
         UpdateBlacklistUI()
     end)
 
     box:AddButton("Limpar Blacklist", function()
         Blacklist = {}
+        SaveBlacklist()
         UpdateBlacklistUI()
         Library:Notify("Blacklist limpa!", 4)
     end)
 
     function UpdateBlacklistUI()
-        -- Atualiza jogadores no servidor
+        -- Jogadores no servidor
         local serverList = {}
         for _, pl in ipairs(Players:GetPlayers()) do
             if pl ~= plr then
@@ -2743,7 +2772,7 @@ do
         end
         ServerPlayersDropdown:SetValues(serverList)
 
-        -- Atualiza Blacklist
+        -- Blacklist
         local blList = {}
         for _, name in ipairs(Blacklist) do
             local pl = Players:FindFirstChild(name)
@@ -2760,7 +2789,7 @@ do
     end
 end
 
--- ==================== NOTIFICAÇÃO QUANDO ENTRAR ====================
+-- Notificação ao entrar
 Players.PlayerAdded:Connect(function(pl)
     task.wait(1.5)
     if not BlacklistEnabled then return end
@@ -2770,10 +2799,17 @@ Players.PlayerAdded:Connect(function(pl)
     end
 end)
 
--- Atualiza listas automaticamente
+-- Atualizações automáticas
 Players.PlayerAdded:Connect(UpdateBlacklistUI)
 Players.PlayerRemoving:Connect(UpdateBlacklistUI)
 UpdateBlacklistUI()
+
+-- Salva quando o jogador sai (opcional, mas bom)
+game.Players.PlayerRemoving:Connect(function(pl)
+    if pl == plr then
+        SaveBlacklist()
+    end
+end)
 
 
 do
