@@ -1614,10 +1614,10 @@ box:AddButton("Break Barrier", function()
     local pos = HRP.CFrame
     local t = tick()
     local burg = inv:FindFirstChild("FoodHamburger") or spawntoy("FoodHamburger", HRP.CFrame * CFrame.new(5,5,20))
-    task.wait(0.1)
+    task.wait(0.2)
     grab(burg)
     HRP.CFrame = workspace.Waypoints.TudorHouse.CFrame
-    task.wait(0.05)
+    task.wait(0.09)
     DestroyToy:FireServer(burg)
     HRP.CFrame = pos
 end)
@@ -2062,7 +2062,7 @@ box:AddToggle("ApplyMethodGrab", {
                                     kickbp = Instance.new("BodyPosition")
                                     kickbp.Parent = Sets.HRP
                                     kickbp.MaxForce = Vector3.new(math.huge, math.huge, math.huge)
-                                    kickbp.D = 300
+                                    kickbp.D = 200
                                     kickbp.Position = HRP.Position + Vector3.new(0,5,0)
                                 end
                                 if not kickbg or kickbg.Parent ~= Sets.HRP then
@@ -2304,7 +2304,7 @@ end
 
 do
 local box = Tabs.Main:AddRightGroupbox("Lags")
-local lps = 100
+local lps = 400
 local Packets = 3000
 box:AddSlider("LPS", {
     Text = "Lines Per Second",
@@ -2339,7 +2339,7 @@ box:AddSlider("Packets", {
     Text = "Packet Strength",
     Default = 3000,
     Min = 100,
-    Max = 900000,
+    Max = 600000,
     Rounding = 0,
     Callback = function(v)
         Packets = v
@@ -2362,11 +2362,11 @@ box:AddToggle("PacketLag", {
         PacketsEnabled = v
         if v then
             task.spawn(function()
-                while PacketsEnabled and task.wait(0.5) do
+                while PacketsEnabled and task.wait(0.3) do
                     if AntiDetect then
-                        game:GetService("ReplicatedStorage").GrabEvents.CreateGrabLine:FireServer(string.rep("sosoososososossosoososososos", Packets))
+                        game:GetService("ReplicatedStorage").GrabEvents.CreateGrabLine:FireServer(string.rep("VTX_Hub is crazyyyyyyyy", Packets))
                     else
-                        game:GetService("ReplicatedStorage").GrabEvents.ExtendGrabLine:FireServer(string.rep("sosoososososossosoososososos", Packets))
+                        game:GetService("ReplicatedStorage").GrabEvents.ExtendGrabLine:FireServer(string.rep("VTX_Hub is crazyyyyyyyy", Packets))
                     end
                 end
             end)
