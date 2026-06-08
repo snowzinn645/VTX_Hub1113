@@ -2304,7 +2304,7 @@ end
 
 do
 local box = Tabs.Main:AddRightGroupbox("Lags")
-local lps = 400
+local lps = 2000
 local Packets = 3000
 box:AddSlider("LPS", {
     Text = "Lines Per Second",
@@ -2337,9 +2337,9 @@ box:AddToggle("LineLag", {
 
 box:AddSlider("Packets", {
     Text = "Packet Strength",
-    Default = 3000,
-    Min = 100,
-    Max = 600000,
+    Default = 20000,
+    Min = 400,
+    Max = 800000,
     Rounding = 0,
     Callback = function(v)
         Packets = v
