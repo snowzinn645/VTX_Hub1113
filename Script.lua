@@ -201,11 +201,15 @@ rs.GrabEvents.ExtendGrabLine.OnClientEvent:Connect(function(...)
         end
     end
 end)
-
-local Window = Library:CreateWindow({
-    Title = "VTX_Hub",
-    Footer = "version: 1.0.0",
-    NotifySide = "Right",
+Window = Library:CreateWindow({
+    SidebarCompacted = false,
+    SearchbarSize = UDim2.fromScale(0.5, 1),
+    Title = 'VTX_Hub',
+    Footer = 'version: 1.0.0',
+    IconSize = UDim2.fromOffset(40, 40),
+    SidebarCompactWidth = 50,
+    CornerRadius = 13,
+    BackgroundImage = "rbxassetid://0"
 })
 local Tabs = {
 	Main = Window:AddTab("Main"),
@@ -457,15 +461,15 @@ box:AddToggle("AntiInput", {
         if antiinputlag then
             local burger = inv:FindFirstChild("FoodCoconut") or spawntoy("FoodCoconut", HRP.CFrame)
             burger.Name = "burger"
-            task.wait(0)
+            task.wait(0.2)
             spawn(function()
                 while antiinputlag and task.wait() do
                     task.spawn(function()
                         grab(burger)
                     end)
-                    task.wait(0)
+                    task.wait(0.1)
                     task.spawn(function()
-                        drop(burger, CFrame.new(0, 1, 0))
+                        drop(burger, CFrame.new(0, 1e9, 0))
                     end)
                     if (burger.HoldPart.RigidConstraint.Attachment1 and burger.HoldPart.RigidConstraint.Attachment1 ~= plr.Character["Left Arm"].LeftGripAttachment) or (not burger or not burger.Parent) then
                         if inv:FindFirstChild("burger") then
@@ -520,7 +524,7 @@ box:AddToggle("GucciTractor", {
                     end
                 end)
                 spawn(function()
-                    task.wait(0)
+                    task.wait(1)
                     local mess = pal.ViewItemButton.NewMessage:Clone()
                     mess.Name = "Gucci2"
                     mess.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -544,7 +548,7 @@ box:AddToggle("GucciTractor", {
             while blobb.VehicleSeat.Occupant ~= plr.Character.Humanoid do task.wait() end
             plr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
             sno(blobb.Part)
-            task.wait(0.1)
+            task.wait(0.2)
             blobb.VehicleSeat.CFrame = CFrame.new(0, 0/0, 0)
         else
             DestroyToy:FireServer(inv.tractorgucci)
@@ -571,9 +575,9 @@ box:AddToggle("GucciTrain", {
                     task.wait()
                 end
             end)
-            task.wait(0.1)
+            task.wait(0.2)
             plr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
-            task.wait(0.1)
+            task.wait(0.2)
             HRP.CFrame = pos
         else
             for i = 1, 30 do
@@ -602,7 +606,7 @@ box:AddToggle("GucciBlobman", {
                     end
                 end)
                 spawn(function()
-                    task.wait(0)
+                    task.wait(1)
                     local mess = pal.ViewItemButton.NewMessage:Clone()
                     mess.Name = "Gucci1"
                     mess.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -648,7 +652,7 @@ box:AddToggle("AutoGucciBlob", {
                 local blobb
                 repeat task.wait() until plr.IsHeld.Value == false
                 hum.Sit = true
-                task.wait(0)
+                task.wait(0.1)
                 hum.Sit = false
                 pcall(function()
                     local pal, pal2
@@ -661,7 +665,7 @@ box:AddToggle("AutoGucciBlob", {
                         end
                     end)
                     spawn(function()
-                        task.wait(0)
+                        task.wait(1)
                         local mess = pal.ViewItemButton.NewMessage:Clone()
                         mess.Name = "Gucci1"
                         mess.TextColor3 = Color3.fromRGB(255, 255, 255)
@@ -690,7 +694,7 @@ box:AddToggle("AutoGucciBlob", {
                 plr.Character.Humanoid:ChangeState(Enum.HumanoidStateType.Jumping)
                 task.wait()
                 repeat task.wait() sno(blobb.RightDetector) until blobb.Head:FindFirstChild("PartOwner")
-                task.wait(0)
+                task.wait(0.1)
                 blobb.VehicleSeat.CFrame = CFrame.new(0, 0/0, 0)
             end
             task.spawn(function()
@@ -897,7 +901,8 @@ box:AddToggle("AntiBurn", {
         end
     end
 })
-
+--vouta
+local box = Tabs.Defence:AddRightGroupbox("More")
 box:AddToggle("AntiBlobman", {
     Text = "Anti Blobman",
     Default = false,
@@ -1614,10 +1619,10 @@ box:AddButton("Break Barrier", function()
     local pos = HRP.CFrame
     local t = tick()
     local burg = inv:FindFirstChild("FoodHamburger") or spawntoy("FoodHamburger", HRP.CFrame * CFrame.new(5,5,20))
-    task.wait(0.2)
+    task.wait(0.1)
     grab(burg)
     HRP.CFrame = workspace.Waypoints.TudorHouse.CFrame
-    task.wait(0.09)
+    task.wait(0.05)
     DestroyToy:FireServer(burg)
     HRP.CFrame = pos
 end)
@@ -1925,7 +1930,7 @@ box:AddToggle("ApplyMethodBlob", {
                                 local pos = HRP.CFrame
                                 if tt.Character and tt.Character:FindFirstChild("HumanoidRootPart") and tt.Character.Humanoid.Health ~= 0 then
                                     Blob.HumanoidRootPart.CFrame = tt.Character.HumanoidRootPart.CFrame
-                                    task.wait(0)
+                                    task.wait(0.1)
                                     repeat task.wait()
                                         CG:FireServer(nil, tt.Character.HumanoidRootPart, Blob.RightDetector.RightWeld)
                                         CD:FireServer(Blob.RightDetector.RightWeld)
@@ -2005,17 +2010,17 @@ box:AddToggle("ApplyMethodGrab", {
                                     repeat task.wait() blob.VehicleSeat:Sit(hum) until hum.SeatPart == blob.VehicleSeat 
                                     local CG,CD = blob.BlobmanSeatAndOwnerScript.CreatureGrab, blob.BlobmanSeatAndOwnerScript.CreatureRelease
                                     blob.HumanoidRootPart.CFrame = Sets.HRP.CFrame
-                                    task.wait(0)
+                                    task.wait(0.2)
                                     repeat
                                         task.wait()
                                         CG:FireServer(blob.RightDetector, Sets.HRP, blob.RightDetector.RightWeld)
                                         CD:FireServer(blob.RightDetector.RightWeld)
                                     until isnetworkowner(Sets.HRP)
-                                    task.wait(0)
+                                    task.wait(0.2)
                                     Sets.HRP.CFrame = pos * offset
                                     HRP.CFrame = pos
                                     DestroyToy:FireServer(inv:FindFirstChild("cringe"))
-                                    task.wait(0)
+                                    task.wait(0.5)
                                 end
                             end
                             if Sets.HRP and hum and HRP then
@@ -2034,11 +2039,11 @@ box:AddToggle("ApplyMethodGrab", {
                                 if (Sets.HRP.Position - HRP.Position).Magnitude >= 29 and Sets.Char.Parent == workspace then
                                     task.wait(0.1)
                                     tp(HRP, Sets.HRP)
-                                    task.wait(0.1)
+                                    task.wait(0.2)
                                     sno(Sets.HRP)
                                     task.wait()
                                     HRP.CFrame = pos
-                                    task.wait(0.1)
+                                    task.wait(0.2)
                                     for i,v in pairs(Sets.Char:GetChildren()) do
                                         if v:IsA("Part") and v.Name ~= "Humanoid" then
                                             v.CFrame = pos * offset
@@ -2115,13 +2120,13 @@ box:AddToggle("ApplyMethodGrab", {
                                     repeat task.wait() blob.VehicleSeat:Sit(hum) until hum.SeatPart == blob.VehicleSeat 
                                     local CG,CD = blob.BlobmanSeatAndOwnerScript.CreatureGrab, blob.BlobmanSeatAndOwnerScript.CreatureRelease
                                     blob.HumanoidRootPart.CFrame = Sets.HRP.CFrame
-                                    task.wait(0.1)
+                                    task.wait(0.2)
                                     repeat
                                         task.wait()
                                         CG:FireServer(blob.RightDetector, Sets.HRP, blob.RightDetector.RightWeld)
                                         CD:FireServer(blob.RightDetector.RightWeld)
                                     until isnetworkowner(Sets.HRP)
-                                    task.wait(0.1)
+                                    task.wait(0.2)
                                     Sets.HRP.CFrame = pos * offset
                                     HRP.CFrame = pos
                                     DestroyToy:FireServer(inv:FindFirstChild("cringe"))
@@ -2304,7 +2309,7 @@ end
 
 do
 local box = Tabs.Main:AddRightGroupbox("Lags")
-local lps = 2000
+local lps = 100
 local Packets = 3000
 box:AddSlider("LPS", {
     Text = "Lines Per Second",
@@ -2337,9 +2342,9 @@ box:AddToggle("LineLag", {
 
 box:AddSlider("Packets", {
     Text = "Packet Strength",
-    Default = 20000,
-    Min = 400,
-    Max = 800000,
+    Default = 3000,
+    Min = 100,
+    Max = 600000,
     Rounding = 0,
     Callback = function(v)
         Packets = v
@@ -2362,11 +2367,11 @@ box:AddToggle("PacketLag", {
         PacketsEnabled = v
         if v then
             task.spawn(function()
-                while PacketsEnabled and task.wait(0.3) do
+                while PacketsEnabled and task.wait(0.5) do
                     if AntiDetect then
-                        game:GetService("ReplicatedStorage").GrabEvents.CreateGrabLine:FireServer(string.rep("VTX_Hub is crazyyyyyyyy", Packets))
+                        game:GetService("ReplicatedStorage").GrabEvents.CreateGrabLine:FireServer(string.rep("sosoososososossosoososososos", Packets))
                     else
-                        game:GetService("ReplicatedStorage").GrabEvents.ExtendGrabLine:FireServer(string.rep("VTX_Hub is crazyyyyyyyy", Packets))
+                        game:GetService("ReplicatedStorage").GrabEvents.ExtendGrabLine:FireServer(string.rep("sosoososososossosoososososos", Packets))
                     end
                 end
             end)
@@ -2668,48 +2673,21 @@ toggle:OnChanged(function(v)
 end)
 
 end
--- ==================== BLACKLIST (Persistente com Arquivo) ====================
-local BlacklistFile = "Blacklist_Config.json"
-
-local function SaveBlacklist()
-    local data = {
-        Blacklist = Blacklist or {},
-        Enabled = BlacklistEnabled or false
-    }
-    writefile(BlacklistFile, game:GetService("HttpService"):JSONEncode(data))
-end
-
-local function LoadBlacklist()
-    if isfile(BlacklistFile) then
-        local success, data = pcall(function()
-            return game:GetService("HttpService"):JSONDecode(readfile(BlacklistFile))
-        end)
-        if success then
-            Blacklist = data.Blacklist or {}
-            BlacklistEnabled = data.Enabled or false
-            return true
-        end
-    end
-    Blacklist = {}
-    BlacklistEnabled = false
-    return false
-end
-
--- Carrega ao iniciar o script
-LoadBlacklist()
+-- ==================== BLACKLIST (Apenas Notificação) ====================
+local Blacklist = {}  -- Lista permanente
 
 do
     local box = Tabs.Blacklist:AddLeftGroupbox("Blacklist")
 
     box:AddToggle("EnableBlacklist", {
         Text = "Enable Blacklist",
-        Default = BlacklistEnabled,
+        Default = false,
         Callback = function(v)
             BlacklistEnabled = v
-            SaveBlacklist()
         end
     })
 
+    -- Lista de jogadores no servidor
     local ServerPlayersDropdown = box:AddDropdown("ServerPlayers", {
         Text = "Jogadores no Servidor",
         Values = {},
@@ -2717,6 +2695,7 @@ do
         Multi = false,
     })
 
+    -- Lista da Blacklist
     local BlacklistDropdown = box:AddDropdown("BlacklistList", {
         Text = "Jogadores na Blacklist",
         Values = {},
@@ -2732,7 +2711,6 @@ do
         if not table.find(Blacklist, name) then
             table.insert(Blacklist, name)
             Library:Notify("✅ " .. name .. " adicionado na Blacklist", 4)
-            SaveBlacklist()
             UpdateBlacklistUI()
         else
             Library:Notify(name .. " já está na blacklist", 3)
@@ -2748,19 +2726,17 @@ do
                 table.remove(Blacklist, idx)
             end
         end
-        SaveBlacklist()
         UpdateBlacklistUI()
     end)
 
     box:AddButton("Limpar Blacklist", function()
         Blacklist = {}
-        SaveBlacklist()
         UpdateBlacklistUI()
         Library:Notify("Blacklist limpa!", 4)
     end)
 
     function UpdateBlacklistUI()
-        -- Jogadores no servidor
+        -- Atualiza jogadores no servidor
         local serverList = {}
         for _, pl in ipairs(Players:GetPlayers()) do
             if pl ~= plr then
@@ -2772,7 +2748,7 @@ do
         end
         ServerPlayersDropdown:SetValues(serverList)
 
-        -- Blacklist
+        -- Atualiza Blacklist
         local blList = {}
         for _, name in ipairs(Blacklist) do
             local pl = Players:FindFirstChild(name)
@@ -2789,7 +2765,7 @@ do
     end
 end
 
--- Notificação ao entrar
+-- ==================== NOTIFICAÇÃO QUANDO ENTRAR ====================
 Players.PlayerAdded:Connect(function(pl)
     task.wait(1.5)
     if not BlacklistEnabled then return end
@@ -2799,17 +2775,10 @@ Players.PlayerAdded:Connect(function(pl)
     end
 end)
 
--- Atualizações automáticas
+-- Atualiza listas automaticamente
 Players.PlayerAdded:Connect(UpdateBlacklistUI)
 Players.PlayerRemoving:Connect(UpdateBlacklistUI)
 UpdateBlacklistUI()
-
--- Salva quando o jogador sai (opcional, mas bom)
-game.Players.PlayerRemoving:Connect(function(pl)
-    if pl == plr then
-        SaveBlacklist()
-    end
-end)
 
 
 do
